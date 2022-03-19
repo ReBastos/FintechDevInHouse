@@ -1,0 +1,15 @@
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\bin\Debug\net6.0\FintechDevInHouse.exe
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\bin\Debug\net6.0\FintechDevInHouse.deps.json
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\bin\Debug\net6.0\FintechDevInHouse.runtimeconfig.json
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\bin\Debug\net6.0\FintechDevInHouse.dll
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\bin\Debug\net6.0\FintechDevInHouse.pdb
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\FintechDevInHouse.csproj.AssemblyReference.cache
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\FintechDevInHouse.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\FintechDevInHouse.AssemblyInfoInputs.cache
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\FintechDevInHouse.AssemblyInfo.cs
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\FintechDevInHouse.csproj.CoreCompileInputs.cache
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\FintechDevInHouse.dll
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\refint\FintechDevInHouse.dll
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\FintechDevInHouse.pdb
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\FintechDevInHouse.genruntimeconfig.cache
+C:\Users\renat\Desktop\DevInHouse\FintechDevInHouse\obj\Debug\net6.0\ref\FintechDevInHouse.dll
