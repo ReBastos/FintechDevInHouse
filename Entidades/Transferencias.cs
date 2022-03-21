@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace FintechDevInHouse.Entidades
 {
-    public class Transferencias
+    public class Transferencias : Transacao
     {
-        public Conta Origem { get; set; }
-        public Conta Destino { get; set; }
-        public decimal Valor { get; set; }
-        public DateTime Data { get; } = DateTime.Now;
+        
 
-        public Transferencias(Conta origem, Conta destino, decimal valor)
+        public Conta Destino { get; set; }
+
+
+        public Transferencias(Conta origem, decimal valor, Conta destino) : base(origem, valor)
         {
-            Origem = origem;
             Destino = destino;
-            Valor = valor;
         }
+
     }
 }

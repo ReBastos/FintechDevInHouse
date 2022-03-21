@@ -12,5 +12,7 @@ namespace FintechDevInHouse.Entidades
             : base(nome, cPF, endereco, rendaMensal, agencia)
         {
         }
+
+
     }
 }

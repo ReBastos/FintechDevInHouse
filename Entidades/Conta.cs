@@ -18,9 +18,18 @@ namespace FintechDevInHouse.Entidades
         public decimal RendaMensal { get; set; }
         public AgenciaEnum Agencia { get; set; }
         public decimal Saldo { get; set; } = 100;
+        public List<Transacao> TransacaoList { get; set; }
 
-        //Falta Transacoes
+        public void AdicionarTransacao(Transacao transacao)
+        {
+            if(TransacaoList == null)
+            {
+                TransacaoList = new List<Transacao>();
+            }
+            TransacaoList.Add(transacao);
+        }
 
+        
         public Conta(string nome, string cPF, string endereco, decimal rendaMensal, AgenciaEnum agencia)
         {
             Nome = nome;
@@ -30,17 +39,17 @@ namespace FintechDevInHouse.Entidades
             Agencia = agencia;
         }
 
-        public decimal Saque(decimal saque)
+        public void Saque(Saque saque)
         {
             try
             {
-                if (Saldo < saque)
+                if (Saldo < saque.Valor)
                     throw new Exception("Você não possúi saldo suficiente na conta!");
 
-                if(saque < 0)
+                if(saque.Valor <= 0)
                     throw new Exception("Valor de saque não pode ser negativo!");
 
-                Saldo = Saldo - saque;
+                Saldo = Saldo - saque.Valor;
 
                 Console.WriteLine($"O valor: R${saque:N2} foi sacado.");
                 Console.WriteLine($"Saldo atual: R${Saldo:N2}");
@@ -52,20 +61,19 @@ namespace FintechDevInHouse.Entidades
                 Console.WriteLine(ex.Message);
 
             }
-
-            return saque;
             
         }
 
-        public decimal Deposito(decimal deposito)
+        public void Deposito(Deposito deposito)
         {
             try
             {
-                if (deposito < 0)
-                    throw new Exception("Valor de depósito não pode ser negativo");
+                if (deposito.Valor <= 0)
+                    throw new Exception("Valor de depósito inválido! Tente novalmente com um valor diferente.");
 
-                Saldo = Saldo + deposito;
+                Saldo = Saldo + deposito.Valor;
 
+                TransacaoList.Add(deposito);
             }
 
             catch(Exception ex)
@@ -73,7 +81,7 @@ namespace FintechDevInHouse.Entidades
                 Console.WriteLine(ex.Message);
             }
 
-            return deposito;
+            
         }
 
         public void RetornarSaldo()
@@ -81,7 +89,23 @@ namespace FintechDevInHouse.Entidades
             Console.WriteLine($"Seu saldo atual é: R${Saldo:N2}");
         }
 
-        //Falta Extrato
+        public void Extrato()
+        {
+            TransacaoList.ForEach(transacao => {
+            
+                if(transacao is Transferencias)
+                {
+                    InformacoesConta(transacao.Origem)
+                }
+            });
+        }
+
+        public static void InformacoesConta(Conta conta)
+        {
+            Console.WriteLine($"Nome:{conta.Nome}");
+            Console.WriteLine($"Agência{conta.Agencia}");
+
+        }
 
         public decimal Transferencia(decimal valor, Conta conta)
         {
