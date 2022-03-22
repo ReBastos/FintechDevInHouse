@@ -9,7 +9,7 @@ namespace FintechDevInHouse.Entidades
     public class ContaPoupanca : Conta
     {
 
-        public ContaPoupanca(string nome, string cPF, string endereco, decimal rendaMensal, AgenciaEnum agencia) 
+        public ContaPoupanca(string nome, string cPF, string endereco, decimal rendaMensal, string agencia) 
             : base(nome, cPF, endereco, rendaMensal, agencia)
         {
         }

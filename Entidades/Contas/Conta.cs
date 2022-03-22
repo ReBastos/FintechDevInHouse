@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 
 namespace FintechDevInHouse.Entidades
 {
-    public enum AgenciaEnum
-    {
-        Florianopolis, SaoJose,Biguacu
-    }
+   
     public  class Conta
     {
         public string Nome { get; set; }
         public string CPF { get; set; } //Falta Validar
         public string Endereco { get; set; }
         public decimal RendaMensal { get; set; }
-        public AgenciaEnum Agencia { get; set; }
+        public string Agencia { get; set; }
         public decimal Saldo { get; set; } = 100;
         public List<Transacao> TransacaoList { get; set; }
 
@@ -30,7 +27,7 @@ namespace FintechDevInHouse.Entidades
         }
 
         
-        public Conta(string nome, string cPF, string endereco, decimal rendaMensal, AgenciaEnum agencia)
+        public Conta(string nome, string cPF, string endereco, decimal rendaMensal, string agencia)
         {
             Nome = nome;
             CPF = cPF;
@@ -95,7 +92,7 @@ namespace FintechDevInHouse.Entidades
             
                 if(transacao is Transferencias)
                 {
-                    InformacoesConta(transacao.Origem)
+                    InformacoesConta(transacao.Origem);
                 }
             });
         }

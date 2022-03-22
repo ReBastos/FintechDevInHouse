@@ -6,20 +6,18 @@ using System.Threading.Tasks;
 
 namespace FintechDevInHouse.Entidades
 {
-    public class Banco
+    public class Agencia
     {
-
-        public List<Conta> ContasList { get; set; }
+        public List<Conta> Contas { get; set; }
 
         public void AdicionarConta(Conta conta)
         {
-            if(ContasList == null)
+            if (Contas == null)
             {
-                ContasList = new List<Conta>();
+                Contas = new List<Conta>();
             }
 
-            ContasList.Add(conta);
-
+            Contas.Add(conta);
         }
     }
 }

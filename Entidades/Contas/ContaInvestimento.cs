@@ -15,7 +15,7 @@ namespace FintechDevInHouse.Entidades
         public decimal Investimento { get; set; }
         public TipoInvestimentoEnum TipoInvestimento { get; set; }
 
-        public ContaInvestimento(string nome, string cPF, string endereco, decimal rendaMensal, AgenciaEnum agencia) 
+        public ContaInvestimento(string nome, string cPF, string endereco, decimal rendaMensal, string agencia) 
             : base(nome, cPF, endereco, rendaMensal, agencia)
         {
         }

@@ -8,7 +8,7 @@ namespace FintechDevInHouse.Entidades
 {
     internal class ContaCorrente : Conta
     {
-        public ContaCorrente(string nome, string cPF, string endereco, decimal rendaMensal, AgenciaEnum agencia) 
+        public ContaCorrente(string nome, string cPF, string endereco, decimal rendaMensal, string agencia) 
             : base(nome, cPF, endereco, rendaMensal, agencia)
         {
         }
