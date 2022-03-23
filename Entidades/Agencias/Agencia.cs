@@ -8,16 +8,21 @@ namespace FintechDevInHouse.Entidades
 {
     public class Agencia
     {
-        public List<Conta> Contas { get; set; }
+        public List<Conta>? ListContas { get; set; }
 
         public void AdicionarConta(Conta conta)
         {
-            if (Contas == null)
+            if (ListContas == null)
             {
-                Contas = new List<Conta>();
+                ListContas = new List<Conta>();
             }
 
-            Contas.Add(conta);
+            ListContas.Add(conta);
+        }
+
+        public Agencia(List<Conta>? listContas)
+        {
+            ListContas = listContas;
         }
     }
 }

@@ -8,6 +8,8 @@ namespace FintechDevInHouse.Entidades.Agencias
 {
     public class Florianopolis : Agencia
     {
-
+        public Florianopolis(List<Conta>? listContas) : base(listContas)
+        {
+        }
     }
 }

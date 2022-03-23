@@ -15,7 +15,7 @@ namespace FintechDevInHouse.Entidades
         public decimal RendaMensal { get; set; }
         public string Agencia { get; set; }
         public decimal Saldo { get; set; } = 100;
-        public List<Transacao> TransacaoList { get; set; }
+        public List<Transacao>? TransacaoList { get; set; }
 
         public void AdicionarTransacao(Transacao transacao)
         {
@@ -36,49 +36,27 @@ namespace FintechDevInHouse.Entidades
             Agencia = agencia;
         }
 
-        public void Saque(Saque saque)
+        public Saque Saque(decimal valor)
         {
-            try
-            {
-                if (Saldo < saque.Valor)
-                    throw new Exception("Você não possúi saldo suficiente na conta!");
-
-                if(saque.Valor <= 0)
-                    throw new Exception("Valor de saque não pode ser negativo!");
-
-                Saldo = Saldo - saque.Valor;
-
-                Console.WriteLine($"O valor: R${saque:N2} foi sacado.");
-                Console.WriteLine($"Saldo atual: R${Saldo:N2}");
-
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-
-            }
             
+                this.Saldo = Saldo - valor;
+
+                Saque saque = new Saque(this.Nome, valor);
+
+                return saque;
+
         }
 
-        public void Deposito(Deposito deposito)
+        public Deposito Deposito(decimal valor)
         {
-            try
-            {
-                if (deposito.Valor <= 0)
-                    throw new Exception("Valor de depósito inválido! Tente novalmente com um valor diferente.");
 
-                Saldo = Saldo + deposito.Valor;
+            this.Saldo = Saldo + valor;
 
-                TransacaoList.Add(deposito);
-            }
+            Deposito deposito = new Deposito(this.Nome, valor);
 
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            return deposito;
 
-            
+
         }
 
         public void RetornarSaldo()
@@ -92,15 +70,15 @@ namespace FintechDevInHouse.Entidades
             
                 if(transacao is Transferencias)
                 {
-                    InformacoesConta(transacao.Origem);
+                    InformacoesConta();
                 }
             });
         }
 
-        public static void InformacoesConta(Conta conta)
+        public void InformacoesConta()
         {
-            Console.WriteLine($"Nome:{conta.Nome}");
-            Console.WriteLine($"Agência{conta.Agencia}");
+            Console.WriteLine($"Nome: {this.Nome}");
+            Console.WriteLine($"Agência: {this.Agencia}");
 
         }
 

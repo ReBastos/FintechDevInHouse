@@ -3,10 +3,10 @@ using FintechDevInHouse.Entidades;
 using FintechDevInHouse.Entidades.Agencias;
 
 do {
-
-    Florianopolis florianopolis = new Florianopolis();
-    Biguacu biguacu = new Biguacu();
-    SaoJose saoJose = new SaoJose();
+    Console.Clear();
+    Agencia florianopolis = new Agencia(null);
+    Agencia biguacu = new Agencia(null);
+    Agencia saoJose = new Agencia(null);
 
     Console.WriteLine("Qual agência você gostaria de acessar?");
     Console.WriteLine("001 - Florianópolis");
@@ -17,16 +17,38 @@ do {
 
     if (opcaoAgencia == "001" || opcaoAgencia == "002" || opcaoAgencia == "003") {
 
-        do { 
+        do {
+        Console.Clear();
         Console.WriteLine("Menu Principal!");
         Console.WriteLine("1 - Criar Conta");
-        var opcao = Console.ReadLine();
-        if (opcao == "1")
-        {
-                VincularAgencia(CriarConta(opcaoAgencia),opcaoAgencia, florianopolis, biguacu, saoJose);
+        Console.WriteLine("2 - Acessar Conta");
+            var opcao = Console.ReadLine();
+            if (opcao == "1")
+            {
+                Conta contaCriada = CriarConta(opcaoAgencia);
+                VincularAgencia(contaCriada, opcaoAgencia, florianopolis, biguacu, saoJose);
 
 
-        } else if (opcao == "0")
+            } else if (opcao == "2") {
+
+                if (opcaoAgencia == "001") { Conta contaAcessada = AcessarConta(florianopolis);
+                    MenuConta(contaAcessada);
+                } else
+                if (opcaoAgencia == "002") { Conta contaAcessada = AcessarConta(saoJose);
+                    MenuConta(contaAcessada);
+                } else
+                if (opcaoAgencia == "003") { Conta contaAcessada = AcessarConta(biguacu);
+                    MenuConta(contaAcessada);
+                }
+                else
+                {
+                    Console.WriteLine("Agência Inexitente");
+                }
+
+                
+
+                
+            } else if (opcao == "0")
         
             {             
                 break;
@@ -49,7 +71,9 @@ do {
 
 Conta CriarConta(string agencia)
 {
-
+    Console.Clear();
+    Console.WriteLine("Criar Conta:");
+    
     Console.WriteLine("Digite o seu nome:");
     string nome = Console.ReadLine();
 
@@ -74,6 +98,7 @@ Conta CriarConta(string agencia)
         if (selecaoTipoConta == "1")
         {
             ContaCorrente contaCriada = new ContaCorrente(nome, cpf, endereco, rendaMensal, agencia);
+            contaCriada.InformacoesConta();
             Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
             Console.ReadKey();
             return contaCriada;
@@ -107,10 +132,11 @@ Conta CriarConta(string agencia)
 
 }
 
-void VincularAgencia(Conta conta, string agencia, Florianopolis florianopolis, Biguacu biguacu, SaoJose saojose)
+void VincularAgencia(Conta conta, string agencia, Agencia florianopolis, Agencia biguacu, Agencia saojose)
 {
     try
     {
+        
         if (agencia == "001")
         {
             florianopolis.AdicionarConta(conta);
@@ -149,7 +175,9 @@ Conta AcessarConta (Agencia agencia)
         Console.WriteLine("Digite o seu CPF para acessar a sua conta:");
         string cpf = Console.ReadLine();
 
-        Conta contaSelecionada = agencia.Contas.FirstOrDefault(conta => conta.CPF == cpf);
+        Conta contaSelecionada = agencia.ListContas.FirstOrDefault(conta => conta.CPF == cpf);
+        
+        
 
         if(contaSelecionada == null)
         {
@@ -157,6 +185,7 @@ Conta AcessarConta (Agencia agencia)
             throw new Exception("Conta não encontrada!");
         } else
         {
+            Console.WriteLine($"Seja Bem-Vindo {contaSelecionada.Nome}");
             return contaSelecionada;
         }
     } catch (Exception ex) {
@@ -165,4 +194,179 @@ Conta AcessarConta (Agencia agencia)
         return null;
     }
     
+}
+
+void MenuConta(Conta conta)
+{
+    if(conta is ContaCorrente)
+    {
+        MenuContaCorrente(conta);
+
+    } else if (conta is ContaPoupanca)
+    {
+
+    } else if (conta is ContaInvestimento)
+    {
+
+    }
+
+}
+
+void MenuContaCorrente(Conta conta)
+{
+    do
+    {
+        Console.Clear();
+        Console.WriteLine($"Titular: {conta.Nome}       Agência: {conta.Agencia}");
+        Console.WriteLine("1 - Saque");
+        Console.WriteLine("2 - Depósito");
+        Console.WriteLine("3 - Verificar Saldo");
+        Console.WriteLine("4 - Extrato");
+        Console.WriteLine("5 - Transferência");
+        Console.WriteLine("6 - Alterar Dados");
+        Console.WriteLine("0 - Sair");
+        var opcao = Console.ReadLine();
+
+        if (opcao == "1")
+        {
+
+            Saque(conta);
+
+        }
+        else if (opcao == "2")
+        {
+
+            Deposito(conta);
+
+        }
+        else if (opcao == "3")
+        {
+
+            VerificarSaldo(conta);
+
+        }
+        else if (opcao == "4")
+        {
+
+            Extrato(conta);
+
+        }
+
+
+    } while (true);
+}
+
+void Saque(Conta conta)
+{
+    Console.WriteLine("Digite o valor a ser sacado:");
+    decimal valorSaque = Convert.ToDecimal(Console.ReadLine());
+
+    try
+    {
+        if (conta.Saldo < valorSaque)
+            throw new Exception("Você não possúi saldo suficiente na conta!");
+
+        if (valorSaque <= 0)
+            throw new Exception("Valor de saque não pode ser negativo!");
+
+        var saque = conta.Saque(valorSaque);
+
+        Console.WriteLine($"O valor: R${valorSaque:N2} foi sacado.");
+        Console.WriteLine($"Saldo atual: R${conta.Saldo:N2}");
+        Console.ReadLine();
+
+        conta.AdicionarTransacao(saque);
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        Console.ReadKey();
+    }
+}
+
+void Deposito(Conta conta)
+{
+
+    Console.WriteLine("Digite o valor a ser depositado:");
+    decimal valorDeposito = Convert.ToDecimal(Console.ReadLine());
+
+    try
+    {
+        if (valorDeposito <= 0)
+            throw new Exception("Valor de depósito inválido! Tente um valor difrente!");
+
+        var deposito = conta.Deposito(valorDeposito);
+
+        Console.WriteLine($"O valor: R${valorDeposito:N2} foi depositado.");
+        Console.WriteLine($"Saldo atual: R${conta.Saldo:N2}");
+        Console.ReadKey();
+
+        conta.AdicionarTransacao(deposito);
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        Console.ReadKey();
+    }
+}
+
+void VerificarSaldo(Conta conta)
+{
+    Console.WriteLine($"Seu saldo é de R${conta.Saldo:N2}.");
+    Continuar();
+
+}
+
+void Extrato(Conta conta)
+{
+    try
+    {
+
+        if (conta.TransacaoList == null)
+            throw new Exception("Não há extrato de transacoes");
+
+        conta.TransacaoList.ForEach(transacao =>
+        {
+            if(transacao is Deposito)
+            {
+                Console.WriteLine("-------------------------------");
+                Console.WriteLine("Tipo de Transacao: Depósito");
+                Console.WriteLine($"Valor: R${transacao.Valor:N2}");
+                Console.WriteLine("-------------------------------");
+
+            } else if (transacao is Saque)
+            {
+                Console.WriteLine("-------------------------------");
+                Console.WriteLine("Tipo de Transacao: Saque");
+                Console.WriteLine($"Valor: R${transacao.Valor:N2}");
+                Console.WriteLine("-------------------------------");
+            
+            } else if (transacao is Transferencias)
+            {
+                Console.WriteLine("-------------------------------");
+                Console.WriteLine("Tipo de Transacao: Transferência");
+                Console.WriteLine($"Origem: {transacao.Origem}");
+                Console.WriteLine($"Destino: {transacao}");
+
+            }
+            
+            
+        });
+            Continuar();
+
+    } catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+    
+
+}
+
+
+void Continuar()
+{
+    Console.WriteLine("Pessione uma telca para continuar...");
+    Console.ReadKey();
 }

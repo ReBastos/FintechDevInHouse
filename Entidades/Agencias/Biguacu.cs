@@ -8,6 +8,8 @@ namespace FintechDevInHouse.Entidades.Agencias
 {
     public class Biguacu : Agencia
     {
-
+        public Biguacu(List<Conta>? listContas) : base(listContas)
+        {
+        }
     }
 }

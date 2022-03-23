@@ -10,10 +10,10 @@ namespace FintechDevInHouse.Entidades
     {
         
 
-        public Conta Destino { get; set; }
+        public string Destino { get; set; }
 
 
-        public Transferencias(Conta origem, decimal valor, Conta destino) : base(origem, valor)
+        public Transferencias(string origem, decimal valor, string destino) : base(origem, valor)
         {
             Destino = destino;
         }
