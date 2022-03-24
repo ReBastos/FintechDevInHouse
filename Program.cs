@@ -2,73 +2,98 @@
 using FintechDevInHouse.Entidades;
 using FintechDevInHouse.Entidades.Agencias;
 
-do {
-    Console.Clear();
-    Agencia florianopolis = new Agencia(null);
-    Agencia biguacu = new Agencia(null);
-    Agencia saoJose = new Agencia(null);
-    DateTime dataAtual = DateOnly.FromDateTime(DateTime.Now);
 
-    Console.WriteLine("Qual agência você gostaria de acessar?");
-    Console.WriteLine("001 - Florianópolis");
-    Console.WriteLine("002 - São José");
-    Console.WriteLine("003 - Biguaçu");
-    
-    string opcaoAgencia = Console.ReadLine();
+DateTime dataAtual = DateTime.Now;
 
-    if (opcaoAgencia == "001" || opcaoAgencia == "002" || opcaoAgencia == "003") {
+MenuPrincipal(dataAtual);
 
-        do {
-        Console.Clear();
-        Console.WriteLine("Menu Principal!");
-        Console.WriteLine("1 - Criar Conta");
-        Console.WriteLine("2 - Acessar Conta");
-            var opcao = Console.ReadLine();
-            if (opcao == "1")
+
+void MenuPrincipal(DateTime dataAtual)
+{
+    do
+    {
+
+        Agencia florianopolis = new Agencia(null);
+        Agencia biguacu = new Agencia(null);
+        Agencia saoJose = new Agencia(null);
+
+
+        Console.WriteLine("Qual agência você gostaria de acessar?");
+        Console.WriteLine("001 - Florianópolis");
+        Console.WriteLine("002 - São José");
+        Console.WriteLine("003 - Biguaçu");
+
+        string opcaoAgencia = Console.ReadLine();
+
+        if (opcaoAgencia == "001" || opcaoAgencia == "002" || opcaoAgencia == "003")
+        {
+
+            do
             {
-                Conta contaCriada = CriarConta(opcaoAgencia);
-                VincularAgencia(contaCriada, opcaoAgencia, florianopolis, biguacu, saoJose);
+                Console.Clear();
+                Console.WriteLine("Menu Principal!");
+                Console.WriteLine("1 - Criar Conta");
+                Console.WriteLine("2 - Acessar Conta");
+                var opcao = Console.ReadLine();
+                if (opcao == "1")
+                {
+                    Conta contaCriada = CriarConta(opcaoAgencia);
+                    VincularAgencia(contaCriada, opcaoAgencia, florianopolis, biguacu, saoJose);
 
 
-            } else if (opcao == "2") {
+                }
+                else if (opcao == "2")
+                {
 
-                if (opcaoAgencia == "001") { Conta contaAcessada = AcessarConta(florianopolis);
-                    MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
-                } else
-                if (opcaoAgencia == "002") { Conta contaAcessada = AcessarConta(saoJose);
-                    MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
-                } else
-                if (opcaoAgencia == "003") { Conta contaAcessada = AcessarConta(biguacu);
-                    MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
+                    if (opcaoAgencia == "001")
+                    {
+                        Conta contaAcessada = AcessarConta(florianopolis);
+                        MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
+                    }
+                    else
+                    if (opcaoAgencia == "002")
+                    {
+                        Conta contaAcessada = AcessarConta(saoJose);
+                        MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
+                    }
+                    else
+                    if (opcaoAgencia == "003")
+                    {
+                        Conta contaAcessada = AcessarConta(biguacu);
+                        MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Agência Inexitente");
+                    }
+
+
+
+
+                }
+                else if (opcao == "0")
+
+                {
+                    break;
+
                 }
                 else
                 {
-                    Console.WriteLine("Agência Inexitente");
+
+                    Console.WriteLine("Opçao selecionada inválida! Tente uma opção Diferente!");
+
                 }
+            } while (true);
+        }
 
-                
+        else
+        {
+            Console.WriteLine("Agência Inválida");
+        }
 
-                
-            } else if (opcao == "0")
-        
-            {             
-                break;
 
-            } else {
-
-            Console.WriteLine("Opçao selecionada inválida! Tente uma opção Diferente!");
-
-             }
     } while (true);
-    }
-
-    else
-    {
-        Console.WriteLine("Agência Inválida");
-    }
-
-
-} while (true);
+}
 
 Conta CriarConta(string agencia)
 {
@@ -208,6 +233,8 @@ void MenuConta(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia bigu
     } else if (conta is ContaPoupanca)
     {
 
+        MenuContaPoupanca(conta, florianopolis, saoJose, biguacu);
+
     } else if (conta is ContaInvestimento)
     {
 
@@ -321,6 +348,12 @@ void MenuContaPoupanca(Conta conta, Agencia florianopolis, Agencia saoJose, Agen
         {
 
             AlterarDados(conta);   
+
+        }
+        else if (opcao == "7")
+        {
+
+            SimularInvestimentoPoupanca(conta);
 
         }
 
@@ -509,10 +542,10 @@ void Transferencia(Conta conta, Agencia florianopolis, Agencia SaoJose, Agencia 
 void AlterarDados(Conta conta){
 
     try{
-    Console.Writeline("O que você deseja Alterar?");
-    Console.WriteLIne("1 - Nome");
-    Console.WriteLIne("2 - Endereco");
-    Console.WriteLIne("3 - Renda Mensal");
+    Console.WriteLine("O que você deseja Alterar?");
+    Console.WriteLine("1 - Nome");
+    Console.WriteLine("2 - Endereco");
+    Console.WriteLine("3 - Renda Mensal");
     var opcao = Console.ReadLine();
 
     if (opcao == "1"){
@@ -547,9 +580,27 @@ void AlterarDados(Conta conta){
 
 void SimularInvestimentoPoupanca(Conta conta){
 
-    Console.WriteLine("Digite a quantidade de meses para simular o investimento ");
-    Console.WriteLine("Digite ");
+    Console.WriteLine("Digite a quantidade de meses para simular o investimento:");
+    var meses = Convert.ToDecimal(Console.ReadLine());
 
+    Console.WriteLine("Digite a rentabilidade anual da poupança:");
+    var rentabilidadeAnual = Convert.ToDecimal(Console.ReadLine());
+
+    var rentabilidadeMensal = rentabilidadeAnual / 12;
+
+    var resultadoInvestimento = conta.Saldo;
+
+    for (int i = 0; i < meses; i++)
+    {
+
+        resultadoInvestimento += (resultadoInvestimento * (rentabilidadeMensal / 100));
+        Console.WriteLine(resultadoInvestimento);
+        Continuar();
+
+    }
+
+    Console.WriteLine($"Seu saldo ao final do período simulado será de R${resultadoInvestimento:N2}");
+    Continuar();
 }
 
 void Continuar()
