@@ -7,6 +7,7 @@ do {
     Agencia florianopolis = new Agencia(null);
     Agencia biguacu = new Agencia(null);
     Agencia saoJose = new Agencia(null);
+    DateTime dataAtual = DateOnly.FromDateTime(DateTime.Now);
 
     Console.WriteLine("Qual agência você gostaria de acessar?");
     Console.WriteLine("001 - Florianópolis");
@@ -123,6 +124,7 @@ Conta CriarConta(string agencia)
         } else
         {
             Console.WriteLine("Tipo de conta inválido! Selecione uma opção válida!");
+            Continuar();
             return null;
             continue;
         }
@@ -191,6 +193,7 @@ Conta AcessarConta (Agencia agencia)
     } catch (Exception ex) {
 
         Console.WriteLine(ex.Message);
+        Continuar();
         return null;
     }
     
@@ -255,6 +258,69 @@ void MenuContaCorrente(Conta conta, Agencia florianopolis, Agencia saoJose, Agen
         {
 
             Transferencia(conta, florianopolis, saoJose, biguacu);
+
+        }
+        else if (opcao == "6")
+        {
+
+            AlterarDados(conta);
+
+        }
+
+
+    } while (true);
+}
+
+void MenuContaPoupanca(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu){
+    do
+    {
+        Console.Clear();
+        Console.WriteLine($"Titular: {conta.Nome}       Agência: {conta.Agencia}");
+        Console.WriteLine("1 - Saque");
+        Console.WriteLine("2 - Depósito");
+        Console.WriteLine("3 - Verificar Saldo");
+        Console.WriteLine("4 - Extrato");
+        Console.WriteLine("5 - Transferência");
+        Console.WriteLine("6 - Alterar Dados");
+        Console.WriteLine("7 - Simular Investimento");
+        Console.WriteLine("0 - Sair");
+        var opcao = Console.ReadLine();
+
+        if (opcao == "1")
+        {
+
+            Saque(conta);
+
+        }
+        else if (opcao == "2")
+        {
+
+            Deposito(conta);
+
+        }
+        else if (opcao == "3")
+        {
+
+            VerificarSaldo(conta);
+
+        }
+        else if (opcao == "4")
+        {
+
+            Extrato(conta);
+
+        }
+        else if (opcao == "5")
+        {
+
+            Transferencia(conta, florianopolis, saoJose, biguacu);
+
+        }
+
+        else if (opcao == "6")
+        {
+
+            AlterarDados(conta);   
 
         }
 
@@ -438,6 +504,52 @@ void Transferencia(Conta conta, Agencia florianopolis, Agencia SaoJose, Agencia 
         Console.WriteLine(ex.Message);
         Continuar();
     }
+}
+
+void AlterarDados(Conta conta){
+
+    try{
+    Console.Writeline("O que você deseja Alterar?");
+    Console.WriteLIne("1 - Nome");
+    Console.WriteLIne("2 - Endereco");
+    Console.WriteLIne("3 - Renda Mensal");
+    var opcao = Console.ReadLine();
+
+    if (opcao == "1"){
+
+        Console.WriteLine("Digite o novo nome para Titular da Conta:");
+        var nome = Console.ReadLine();
+        conta.Nome = nome;
+
+    } else if (opcao == "2"){
+
+        Console.WriteLine("Digite o novo Endereço:");
+        var endereco = Console.ReadLine();
+        conta.Endereco = endereco;
+
+    } else if (opcao == "3"){
+
+        Console.WriteLine("Digite a Renda Mensal atualizada:");
+        var renda = Console.ReadLine();
+        conta.RendaMensal = Convert.ToDecimal(renda);
+
+    } else {
+
+        throw new Exception("Opção Inválida!");
+        Continuar();
+    }
+    
+    } catch (Exception ex){
+        Console.WriteLine(ex.Message);
+    }
+
+}
+
+void SimularInvestimentoPoupanca(Conta conta){
+
+    Console.WriteLine("Digite a quantidade de meses para simular o investimento ");
+    Console.WriteLine("Digite ");
+
 }
 
 void Continuar()
