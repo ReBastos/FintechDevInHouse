@@ -8,13 +8,13 @@ namespace FintechDevInHouse.Entidades
 {
     public class Transacao
     {
-        public string Origem { get; set; }
+        public Conta Origem { get; set; }
 
         public decimal Valor { get; set; }
 
         public DateTime Data { get; set; } = DateTime.Now;
 
-        public Transacao(string origem, decimal valor)
+        public Transacao(Conta origem, decimal valor)
         {
             Origem = origem;
             Valor = valor;

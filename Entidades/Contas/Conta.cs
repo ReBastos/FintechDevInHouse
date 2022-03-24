@@ -36,23 +36,23 @@ namespace FintechDevInHouse.Entidades
             Agencia = agencia;
         }
 
-        public Saque Saque(decimal valor)
+        public Saque Saque(decimal valor, Conta origem)
         {
             
                 this.Saldo = Saldo - valor;
 
-                Saque saque = new Saque(this.Nome, valor);
+                Saque saque = new Saque(origem, valor);
 
                 return saque;
 
         }
 
-        public Deposito Deposito(decimal valor)
+        public Deposito Deposito(decimal valor, Conta origem)
         {
 
             this.Saldo = Saldo + valor;
 
-            Deposito deposito = new Deposito(this.Nome, valor);
+            Deposito deposito = new Deposito(origem, valor);
 
             return deposito;
 
@@ -82,28 +82,20 @@ namespace FintechDevInHouse.Entidades
 
         }
 
-        public decimal Transferencia(decimal valor, Conta conta)
+        public void Transferencia(decimal valor, Conta origem, Conta destino)
         {
 
-            try
-            {
-                if (valor < 0)
-                    throw new Exception("Valor de transferência não pode ser negativo!");
+            this.Saldo = Saldo - valor;
+            destino.Saldo = Saldo + valor;
 
-                if (Saldo < valor)
-                    throw new Exception("Você não possúi saldo suficiente!");
+            Transferencias transferencia = new Transferencias(origem,valor,destino);
 
-                Saldo = Saldo - valor;
-                conta.Saldo = conta.Saldo + valor;
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            origem.AdicionarTransacao(transferencia);
+            destino.AdicionarTransacao(transferencia);
 
 
-            return valor;
+
+           
         }
 
         //Falta Alterar Dados

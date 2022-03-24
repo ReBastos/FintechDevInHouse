@@ -8,7 +8,7 @@ namespace FintechDevInHouse.Entidades
 {
     public class Saque : Transacao
     {
-        public Saque(string origem, decimal valor) : base(origem, valor)
+        public Saque(Conta origem, decimal valor) : base(origem, valor)
         {
         }
 

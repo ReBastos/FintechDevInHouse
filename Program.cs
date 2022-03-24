@@ -32,13 +32,13 @@ do {
             } else if (opcao == "2") {
 
                 if (opcaoAgencia == "001") { Conta contaAcessada = AcessarConta(florianopolis);
-                    MenuConta(contaAcessada);
+                    MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
                 } else
                 if (opcaoAgencia == "002") { Conta contaAcessada = AcessarConta(saoJose);
-                    MenuConta(contaAcessada);
+                    MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
                 } else
                 if (opcaoAgencia == "003") { Conta contaAcessada = AcessarConta(biguacu);
-                    MenuConta(contaAcessada);
+                    MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
                 }
                 else
                 {
@@ -196,11 +196,11 @@ Conta AcessarConta (Agencia agencia)
     
 }
 
-void MenuConta(Conta conta)
+void MenuConta(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu)
 {
     if(conta is ContaCorrente)
     {
-        MenuContaCorrente(conta);
+        MenuContaCorrente(conta, florianopolis, saoJose, biguacu);
 
     } else if (conta is ContaPoupanca)
     {
@@ -212,7 +212,7 @@ void MenuConta(Conta conta)
 
 }
 
-void MenuContaCorrente(Conta conta)
+void MenuContaCorrente(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu)
 {
     do
     {
@@ -251,6 +251,12 @@ void MenuContaCorrente(Conta conta)
             Extrato(conta);
 
         }
+        else if (opcao == "5")
+        {
+
+            Transferencia(conta, florianopolis, saoJose, biguacu);
+
+        }
 
 
     } while (true);
@@ -269,7 +275,7 @@ void Saque(Conta conta)
         if (valorSaque <= 0)
             throw new Exception("Valor de saque não pode ser negativo!");
 
-        var saque = conta.Saque(valorSaque);
+        var saque = conta.Saque(valorSaque, conta);
 
         Console.WriteLine($"O valor: R${valorSaque:N2} foi sacado.");
         Console.WriteLine($"Saldo atual: R${conta.Saldo:N2}");
@@ -296,7 +302,7 @@ void Deposito(Conta conta)
         if (valorDeposito <= 0)
             throw new Exception("Valor de depósito inválido! Tente um valor difrente!");
 
-        var deposito = conta.Deposito(valorDeposito);
+        var deposito = conta.Deposito(valorDeposito, conta);
 
         Console.WriteLine($"O valor: R${valorDeposito:N2} foi depositado.");
         Console.WriteLine($"Saldo atual: R${conta.Saldo:N2}");
@@ -333,6 +339,7 @@ void Extrato(Conta conta)
             {
                 Console.WriteLine("-------------------------------");
                 Console.WriteLine("Tipo de Transacao: Depósito");
+                Console.WriteLine($"Origem: Titular-> {transacao.Origem.Nome} CPF->{transacao.Origem.CPF} ");
                 Console.WriteLine($"Valor: R${transacao.Valor:N2}");
                 Console.WriteLine("-------------------------------");
 
@@ -340,6 +347,7 @@ void Extrato(Conta conta)
             {
                 Console.WriteLine("-------------------------------");
                 Console.WriteLine("Tipo de Transacao: Saque");
+                Console.WriteLine($"Origem: Titular-> {transacao.Origem.Nome} CPF->{transacao.Origem.CPF} ");
                 Console.WriteLine($"Valor: R${transacao.Valor:N2}");
                 Console.WriteLine("-------------------------------");
             
@@ -364,6 +372,73 @@ void Extrato(Conta conta)
 
 }
 
+void Transferencia(Conta conta, Agencia florianopolis, Agencia SaoJose, Agencia Biguacu)
+{
+    try
+    {
+        Console.WriteLine("Digite o valor a ser transferido:");
+        var valor = Convert.ToDecimal(Console.ReadLine());
+
+        if (conta is ContaCorrente)
+        {
+            if (valor > conta.Saldo + (conta.RendaMensal * 0.1M))
+            {
+                throw new Exception("Valor excede Cheque Especial!");
+            }
+        } else
+        {
+            if (conta.Saldo < valor)
+                throw new Exception("Você não possúi saldo suficiente!");
+        }
+
+        if (valor <= 0)
+            throw new Exception("Valor inválido!");
+
+        Console.WriteLine("Qual a Agência da conta Destino?");
+        Console.WriteLine("001 - Florianópolis");
+        Console.WriteLine("002 - São José");
+        Console.WriteLine("003 - Biguaçu");
+        string opcaoAgencia = Console.ReadLine();
+
+        Console.WriteLine("Digite o CPF da conta Destino");
+        var cpf = Console.ReadLine();
+
+
+
+
+        if (opcaoAgencia == "001")
+        {
+
+            Conta contaDestino = florianopolis.ListContas.FirstOrDefault(conta => conta.CPF == cpf);
+            conta.Transferencia(valor, conta, contaDestino);
+
+            Continuar();
+
+        }
+        else if (opcaoAgencia == "002")
+        {
+
+            Conta contaDestino = SaoJose.ListContas.FirstOrDefault(conta => conta.CPF == cpf);
+            conta.Transferencia(valor, conta, contaDestino);
+
+            Continuar();
+
+        }
+        else if (opcaoAgencia == "003")
+        {
+
+            Conta contaDestino = Biguacu.ListContas.FirstOrDefault(conta => conta.CPF == cpf);
+            conta.Transferencia(valor, conta, contaDestino);
+
+            Continuar();
+        }
+
+    } catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        Continuar();
+    }
+}
 
 void Continuar()
 {

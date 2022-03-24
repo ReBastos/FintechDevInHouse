@@ -8,7 +8,7 @@ namespace FintechDevInHouse.Entidades
 {
     public class Deposito : Transacao
     {
-        public Deposito(string origem, decimal valor) : base(origem, valor)
+        public Deposito(Conta origem, decimal valor) : base(origem, valor)
         {
         }
 
