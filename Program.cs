@@ -34,6 +34,7 @@ void MenuPrincipal(DateTime dataAtual)
                 Console.WriteLine("Menu Principal!");
                 Console.WriteLine("1 - Criar Conta");
                 Console.WriteLine("2 - Acessar Conta");
+                Console.WriteLine("3 - Listar Todas as Contas");
                 var opcao = Console.ReadLine();
                 if (opcao == "1")
                 {
@@ -70,7 +71,12 @@ void MenuPrincipal(DateTime dataAtual)
 
 
 
+                } else if (opcao == "3") {
+
+                    ListarContas(florianopolis, saoJose, biguacu);
+                
                 }
+
                 else if (opcao == "0")
 
                 {
@@ -638,6 +644,11 @@ void SimularInvestimentoPoupanca(Conta conta){
     Continuar();
 }
 
+void Investir(Conta conta)
+{
+
+}
+
 string ValidarCPF(string cpf)
 {
     try
@@ -700,4 +711,51 @@ void Continuar()
 {
     Console.WriteLine("Pessione uma telca para continuar...");
     Console.ReadKey();
+}
+
+void ListarContas(Agencia florianopolis, Agencia SaoJose, Agencia Biguacu)
+{
+
+    if(florianopolis.ListContas == null)
+    {
+        Console.WriteLine("Não há contas a serem listadas na Agência Florianopolis!");
+    } else
+    {
+        foreach (Conta conta in florianopolis.ListContas)
+        {
+            Console.WriteLine("******************************");
+            Console.WriteLine($"Titular: {conta.Nome} CPF:{conta.CPF}");
+            Console.WriteLine("******************************");
+        }
+    }
+
+    if (SaoJose.ListContas == null)
+    {
+        Console.WriteLine("Não há contas a serem listadas na Agência São Jose!");
+    }
+    else
+    {
+        foreach (Conta conta in SaoJose.ListContas)
+        {
+            Console.WriteLine("******************************");
+            Console.WriteLine($"Titular: {conta.Nome} CPF:{conta.CPF}");
+            Console.WriteLine("******************************");
+        }
+    }
+
+    if (Biguacu.ListContas == null)
+    {
+        Console.WriteLine("Não há contas a serem listadas na Agência Biguacu!");
+    }
+    else
+    {
+        foreach (Conta conta in Biguacu.ListContas)
+        {
+            Console.WriteLine("******************************");
+            Console.WriteLine($"Titular: {conta.Nome} CPF:{conta.CPF}");
+            Console.WriteLine("******************************");
+        }
+    }
+
+    Continuar();
 }
