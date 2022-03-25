@@ -97,66 +97,81 @@ void MenuPrincipal(DateTime dataAtual)
 
 Conta CriarConta(string agencia)
 {
-    Console.Clear();
-    Console.WriteLine("Criar Conta:");
-    
-    Console.WriteLine("Digite o seu nome:");
-    string nome = Console.ReadLine();
+    try
+    {
+        Console.Clear();
+        Console.WriteLine("Criar Conta:");
 
-    Console.WriteLine("Digite o seu CPF:");
-    string cpf = Console.ReadLine();
+        Console.WriteLine("Digite o seu nome:");
+        string nome = Console.ReadLine();
 
-    Console.WriteLine("Digite o seu endereço:");
-    string endereco = Console.ReadLine();
+        Console.WriteLine("Digite o seu CPF:");
+        string cpf = ValidarCPF(Console.ReadLine());
 
-    Console.WriteLine("Digite a sua renda mensal:");
-    decimal rendaMensal = Convert.ToDecimal(Console.ReadLine());
+        if (cpf == null) 
+            throw new Exception("CPF Inválido");
+
+        Console.WriteLine("Digite o seu endereço:");
+        string endereco = Console.ReadLine();
+
+        Console.WriteLine("Digite a sua renda mensal:");
+        decimal rendaMensal = Convert.ToDecimal(Console.ReadLine());
 
 
-    do {
-
-    Console.WriteLine("Selecione o Tipo da Conta:");
-    Console.WriteLine("1 - Conta Corrente");
-    Console.WriteLine("2 - Conta Poupança");
-    Console.WriteLine("3 - Conta Investimento");
-    string selecaoTipoConta = Console.ReadLine(); 
-
-        if (selecaoTipoConta == "1")
+        do
         {
-            ContaCorrente contaCriada = new ContaCorrente(nome, cpf, endereco, rendaMensal, agencia);
-            contaCriada.InformacoesConta();
-            Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
-            Console.ReadKey();
-            return contaCriada;
-            break;
 
-        } else if (selecaoTipoConta == "2")
-        {
-            ContaPoupanca contaCriada = new ContaPoupanca(nome, cpf, endereco, rendaMensal, agencia);
-            Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
-            Console.ReadKey();
-            return contaCriada;
-            break;
+            Console.WriteLine("Selecione o Tipo da Conta:");
+            Console.WriteLine("1 - Conta Corrente");
+            Console.WriteLine("2 - Conta Poupança");
+            Console.WriteLine("3 - Conta Investimento");
+            string selecaoTipoConta = Console.ReadLine();
 
-        } else if (selecaoTipoConta == "3")
-        {
-            ContaInvestimento contaCriada = new ContaInvestimento(nome, cpf, endereco, rendaMensal, agencia);
-            Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
-            Console.ReadKey();
-            return contaCriada;
-            break;
-            
-        } else
-        {
-            Console.WriteLine("Tipo de conta inválido! Selecione uma opção válida!");
-            Continuar();
-            return null;
-            continue;
-        }
+            if (selecaoTipoConta == "1")
+            {
+                ContaCorrente contaCriada = new ContaCorrente(nome, cpf, endereco, rendaMensal, agencia);
+                contaCriada.InformacoesConta();
+                Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
+                Console.ReadKey();
+                return contaCriada;
+                break;
+
+            }
+            else if (selecaoTipoConta == "2")
+            {
+                ContaPoupanca contaCriada = new ContaPoupanca(nome, cpf, endereco, rendaMensal, agencia);
+                Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
+                Console.ReadKey();
+                return contaCriada;
+                break;
+
+            }
+            else if (selecaoTipoConta == "3")
+            {
+                ContaInvestimento contaCriada = new ContaInvestimento(nome, cpf, endereco, rendaMensal, agencia);
+                Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
+                Console.ReadKey();
+                return contaCriada;
+                break;
+
+            }
+            else
+            {
+                Console.WriteLine("Tipo de conta inválido! Selecione uma opção válida!");
+                Continuar();
+                return null;
+                continue;
+            }
 
 
-    } while (true);
+        } while (true);
 
+    } catch(Exception ex)
+    {
+        return null;
+        Console.WriteLine("Erro no cadastro!");
+        Continuar();
+    }
 }
 
 void VincularAgencia(Conta conta, string agencia, Agencia florianopolis, Agencia biguacu, Agencia saojose)
@@ -601,6 +616,64 @@ void SimularInvestimentoPoupanca(Conta conta){
 
     Console.WriteLine($"Seu saldo ao final do período simulado será de R${resultadoInvestimento:N2}");
     Continuar();
+}
+
+string ValidarCPF(string cpf)
+{
+    try
+    {
+        if (cpf.Length < 11)
+            throw new Exception("Número de CPF insuficiente.");
+
+        decimal primeiroVerificador = 0;
+        
+        for (int i = 0; i < 9; i++)
+        {
+            char caractere = cpf[i];
+            var number = caractere - '0';
+
+            primeiroVerificador += (number * (i + 1));            
+            
+        }
+
+        var resto = primeiroVerificador % 11;
+        var primeiroDigito = resto.ToString();
+
+        decimal segundoVerificador = 0;
+
+        for (int i = 0; i < 10; i++)
+        {
+            char caractere = cpf[i];
+            var number = caractere - '0';
+
+            segundoVerificador += (number * i);
+
+        }
+        
+        var resto2 = segundoVerificador % 11;
+        var segundoDigito = resto2.ToString();
+    
+
+        if (primeiroDigito[primeiroDigito.Length - 1] == cpf[9] && segundoDigito[segundoDigito.Length - 1] == cpf[10])
+        {
+            return cpf;
+        }
+        else
+        {
+            return null;
+            throw new Exception("CPF Inválido");
+            
+        }
+
+
+    } catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        Continuar();
+        return null;
+    }
+
+
 }
 
 void Continuar()
