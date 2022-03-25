@@ -2,10 +2,8 @@
 using FintechDevInHouse.Entidades;
 
 
-DateTime dataAtual = DateTime.Now;
 
-MenuPrincipal(dataAtual);
-
+TempodoSistema();
 
 void MenuPrincipal(DateTime dataAtual)
 {
@@ -673,6 +671,19 @@ void Investir(Conta conta)
 
 }
 
+void SimularInvestimento()
+{
+    Console.WriteLine("Qual o valor que pretente aplicar?");
+    var valor = Convert.ToDecimal(Console.ReadLine());
+
+    Console.WriteLine("Por quantos meses deseja manter o valor aplicado?");
+    var meses = Convert.ToDecimal(Console.ReadLine());
+    
+
+
+
+}
+
 string ValidarCPF(string cpf)
 {
     try
@@ -812,4 +823,50 @@ void ListarContasNegativas(Agencia agencia)
     
 
 
+}
+
+void TempodoSistema()
+{
+    do
+    {
+        Console.WriteLine("Defina uma data para iniciar o sistema!");
+        Console.WriteLine("1 - Hoje");
+        Console.WriteLine("2 - Data Simulada");
+        Console.WriteLine("0 - Sair");
+        var opcao = Console.ReadLine();
+
+        if (opcao == "1") {
+
+            DateTime data = DateTime.Now;
+            MenuPrincipal(data);
+
+        } else if (opcao == "2") {
+            Console.WriteLine("Digite o dia:");
+
+            var dia = Console.ReadLine();
+            var convertDia = Int32.Parse(dia);
+            Console.WriteLine("Digite o mês:");
+
+            var mes = Console.ReadLine();
+            var convertMes = Int32.Parse(mes);
+            Console.WriteLine("Digite o ano:");
+
+            var ano = Console.ReadLine();
+            var convertAno = Int32.Parse(ano);
+
+            DateTime data = new DateTime(convertAno, convertMes, convertDia);
+
+                if (data < DateTime.Now) 
+                    throw new Exception("Data não pode ser anterior a atual");
+
+
+            MenuPrincipal(data);
+
+
+        } else if (opcao == "0")
+        {
+            break;
+        }
+
+    } while (true);
 }
