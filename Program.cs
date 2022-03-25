@@ -130,9 +130,8 @@ Conta CriarConta(string agencia)
             if (selecaoTipoConta == "1")
             {
                 ContaCorrente contaCriada = new ContaCorrente(nome, cpf, endereco, rendaMensal, agencia);
-                contaCriada.InformacoesConta();
-                Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
-                Console.ReadKey();
+                Console.WriteLine("Conta criada com SUCESSO!");
+                verificarAgencia(agencia);
                 return contaCriada;
                 break;
 
@@ -140,8 +139,8 @@ Conta CriarConta(string agencia)
             else if (selecaoTipoConta == "2")
             {
                 ContaPoupanca contaCriada = new ContaPoupanca(nome, cpf, endereco, rendaMensal, agencia);
-                Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
-                Console.ReadKey();
+                Console.WriteLine("Conta criada com SUCESSO!");
+                verificarAgencia(agencia);
                 return contaCriada;
                 break;
 
@@ -149,8 +148,8 @@ Conta CriarConta(string agencia)
             else if (selecaoTipoConta == "3")
             {
                 ContaInvestimento contaCriada = new ContaInvestimento(nome, cpf, endereco, rendaMensal, agencia);
-                Console.WriteLine("Conta criada com SUCESSO! Pressione qualquer tecla para continuar...");
-                Console.ReadKey();
+                Console.WriteLine("Conta criada com SUCESSO!");
+                verificarAgencia(agencia);
                 return contaCriada;
                 break;
 
@@ -158,13 +157,31 @@ Conta CriarConta(string agencia)
             else
             {
                 Console.WriteLine("Tipo de conta inválido! Selecione uma opção válida!");
-                Continuar();
+                
                 return null;
                 continue;
             }
 
 
         } while (true);
+
+        void verificarAgencia(string agencia)
+        {
+            if (agencia == "001")
+            {
+                Console.WriteLine("Conta vinculada à agência Florianópolis.");
+
+            }
+            else if (agencia == "002")
+            {
+                Console.WriteLine("Conta vinculada à agência Biguacu.");
+            }
+            else if (agencia == "002")
+            {
+                Console.WriteLine("Conta vinculada à agência São José.");
+            }
+            Continuar();
+        }
 
     } catch(Exception ex)
     {
@@ -390,6 +407,9 @@ void Saque(Conta conta)
             throw new Exception("Valor de saque não pode ser negativo!");
 
         var saque = conta.Saque(valorSaque, conta);
+
+        Console.WriteLine(saque.Data);
+        Continuar();
 
         Console.WriteLine($"O valor: R${valorSaque:N2} foi sacado.");
         Console.WriteLine($"Saldo atual: R${conta.Saldo:N2}");
