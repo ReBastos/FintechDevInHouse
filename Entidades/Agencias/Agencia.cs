@@ -8,6 +8,8 @@ namespace FintechDevInHouse.Entidades
 {
     public class Agencia
     {
+        public string Nome { get; set; }
+
         public List<Conta>? ListContas { get; set; }
 
         public void AdicionarConta(Conta conta)
@@ -20,9 +22,10 @@ namespace FintechDevInHouse.Entidades
             ListContas.Add(conta);
         }
 
-        public Agencia(List<Conta>? listContas)
+        public Agencia(List<Conta>? listContas, string nome)
         {
             ListContas = listContas;
+            Nome = nome;
         }
     }
 }

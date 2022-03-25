@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using FintechDevInHouse.Entidades;
-using FintechDevInHouse.Entidades.Agencias;
 
 
 DateTime dataAtual = DateTime.Now;
@@ -12,16 +11,19 @@ void MenuPrincipal(DateTime dataAtual)
 {
     do
     {
-
-        Agencia florianopolis = new Agencia(null);
-        Agencia biguacu = new Agencia(null);
-        Agencia saoJose = new Agencia(null);
+        Console.Clear();
+        Agencia florianopolis = new Agencia(null, "Florianopolis");
+        Agencia biguacu = new Agencia(null, "Biguacu");
+        Agencia saoJose = new Agencia(null, "São José");
 
 
         Console.WriteLine("Qual agência você gostaria de acessar?");
         Console.WriteLine("001 - Florianópolis");
         Console.WriteLine("002 - São José");
         Console.WriteLine("003 - Biguaçu");
+        Console.WriteLine("4 - Listar Todas as Contas");
+        Console.WriteLine("5 - Listar Contas Negativas");
+        Console.WriteLine("6 - Total do Valor Investido");
 
         string opcaoAgencia = Console.ReadLine();
 
@@ -71,10 +73,12 @@ void MenuPrincipal(DateTime dataAtual)
 
 
 
-                } else if (opcao == "3") {
+                }
+                else if (opcao == "3")
+                {
 
                     ListarContas(florianopolis, saoJose, biguacu);
-                
+
                 }
 
                 else if (opcao == "0")
@@ -92,13 +96,32 @@ void MenuPrincipal(DateTime dataAtual)
             } while (true);
         }
 
-        else
+        else if (opcaoAgencia == "4")
         {
-            Console.WriteLine("Agência Inválida");
+            ListarContas(florianopolis, saoJose, biguacu);
         }
 
+        else if (opcaoAgencia == "5")
+        {
+            ListarContasNegativas(florianopolis);
+            ListarContasNegativas(saoJose);
+            ListarContasNegativas(biguacu);
+            Continuar();
+        }
 
-    } while (true);
+        else if (opcaoAgencia == "6")
+        {
+
+        }
+
+        else if(opcaoAgencia == "0")
+        {
+            Console.WriteLine("Obrigado pela preferência! Aguardamos o seu retorno.");
+            Continuar();
+            break;
+        }
+
+        } while (true);
 }
 
 Conta CriarConta(string agencia)
@@ -759,4 +782,34 @@ void ListarContas(Agencia florianopolis, Agencia SaoJose, Agencia Biguacu)
     }
 
     Continuar();
+}
+
+void ListarContasNegativas(Agencia agencia)
+{
+    try
+    {
+        if (agencia.ListContas == null)
+            throw new Exception($"Não há contas negativas na agência {agencia.Nome}");
+
+        var contasNegativas = agencia.ListContas.Where(conta => conta.Saldo < 0);
+
+        if (contasNegativas == null)
+            throw new Exception($"Não há contas negativas na agência {agencia.Nome}");
+        
+
+        foreach(Conta conta in contasNegativas)
+        {
+            Console.WriteLine($"Titular: {conta.Nome}  CPF: {conta.CPF}");
+        }
+        
+
+    } catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        
+    }
+    
+    
+
+
 }

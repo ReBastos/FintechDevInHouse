@@ -8,24 +8,26 @@
     "net6.0": []
   },
   "packageFolders": {
-    "/home/renato/.nuget/packages/": {}
+    "C:\\Users\\renat\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/renato/Documentos/GitHub/FintechDevInHouse/FintechDevInHouse.csproj",
+      "projectUniqueName": "C:\\Users\\renat\\Desktop\\DevInHouse\\FintechDevInHouse\\FintechDevInHouse.csproj",
       "projectName": "FintechDevInHouse",
-      "projectPath": "/home/renato/Documentos/GitHub/FintechDevInHouse/FintechDevInHouse.csproj",
-      "packagesPath": "/home/renato/.nuget/packages/",
-      "outputPath": "/home/renato/Documentos/GitHub/FintechDevInHouse/obj/",
+      "projectPath": "C:\\Users\\renat\\Desktop\\DevInHouse\\FintechDevInHouse\\FintechDevInHouse.csproj",
+      "packagesPath": "C:\\Users\\renat\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\renat\\Desktop\\DevInHouse\\FintechDevInHouse\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/renato/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\renat\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -58,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/158/sdk/6.0.201/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
