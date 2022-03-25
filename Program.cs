@@ -330,6 +330,8 @@ void MenuContaCorrente(Conta conta, Agencia florianopolis, Agencia saoJose, Agen
 
             AlterarDados(conta);
 
+        } else if (opcao =="0"){
+            break;
         }
 
 
@@ -393,6 +395,8 @@ void MenuContaPoupanca(Conta conta, Agencia florianopolis, Agencia saoJose, Agen
 
             SimularInvestimentoPoupanca(conta);
 
+        } else if (opcao =="0"){
+            break;
         }
 
 
@@ -414,7 +418,6 @@ void Saque(Conta conta)
 
         var saque = conta.Saque(valorSaque, conta);
 
-        Console.WriteLine(saque.Data);
         Continuar();
 
         Console.WriteLine($"O valor: R${valorSaque:N2} foi sacado.");
@@ -635,8 +638,6 @@ void SimularInvestimentoPoupanca(Conta conta){
     {
 
         resultadoInvestimento += (resultadoInvestimento * (rentabilidadeMensal / 100));
-        Console.WriteLine(resultadoInvestimento);
-        Continuar();
 
     }
 
