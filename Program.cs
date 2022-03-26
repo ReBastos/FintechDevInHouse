@@ -673,14 +673,75 @@ void Investir(Conta conta)
 
 void SimularInvestimento()
 {
-    Console.WriteLine("Qual o valor que pretente aplicar?");
-    var valor = Convert.ToDecimal(Console.ReadLine());
+    do {
+        Console.Clear();
+        Console.WriteLine("Tipo de Investimento:");
 
-    Console.WriteLine("Por quantos meses deseja manter o valor aplicado?");
-    var meses = Convert.ToDecimal(Console.ReadLine());
-    
+        Console.WriteLine("1 - LCI: 8% ao ano.");
+        Console.WriteLine("Aplicação mínima: 6 meses");
+
+        Console.WriteLine("2 - LCA: 9% ao ano.");
+        Console.WriteLine("Aplicação mínima: 12 meses");
+
+        Console.WriteLine("3 - CDB: 10% ao ano.");
+        Console.WriteLine("Aplicação mínima: 36 meses");
+        
+        Console.WriteLine(" ");
+        Console.WriteLine("0 - Sair");
+
+        var opcao = Console.ReadLine();
+
+        decimal taxaAnual = 0;
+
+        if(opcao == "1")
+        {
+            taxaAnual = 8;
+
+        } else if (opcao == "2")
+        {
+            taxaAnual = 9;
+
+        }
+        else if(opcao == "3")
+        {
+            taxaAnual = 10;
+
+        } else if (opcao == "0")
+        {
+            break;
+        }
+
+    } while (true);
 
 
+    void CalcularInvestimento(decimal taxaAnual)
+    {
+
+        var taxaDiaria = (taxaAnual / 365) / 100;
+
+        Console.WriteLine("Qual o valor que pretente aplicar?");
+        var valor = Convert.ToDecimal(Console.ReadLine());
+
+        Console.WriteLine("Por quantos meses deseja manter o valor aplicado?");
+        var meses = Convert.ToDecimal(Console.ReadLine());
+
+        var dias = meses * 30;
+
+        for (int i = 0; i < dias; i++)
+        {
+            valor += (valor * taxaDiaria);
+        }
+
+        Console.WriteLine($"O valor ao final do período será de R${valor:N2}");
+
+
+        Console.WriteLine("Deseja aplicar esse valor no investimento selecionado?");
+        Console.WriteLine("1 - Sim");
+        Console.WriteLine("2 - Não")
+        var selecao = Console.ReadLine();
+
+        
+    }
 
 }
 
