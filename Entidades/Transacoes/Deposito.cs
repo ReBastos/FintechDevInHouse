@@ -1,10 +1,11 @@
-﻿using System;
+﻿using FintechDevInHouse.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FintechDevInHouse.Entidades
+namespace FintechDevInHouse.Transacoes
 {
     public class Deposito : Transacao
     {

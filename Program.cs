@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using FintechDevInHouse.Entidades;
-
-
+using FintechDevInHouse.Transacoes;
 
 TempodoSistema();
 
@@ -17,8 +16,8 @@ void MenuPrincipal(DateTime dataAtual)
 
         Console.WriteLine("Qual agência você gostaria de acessar?");
         Console.WriteLine("001 - Florianópolis");
-        Console.WriteLine("002 - São José");
-        Console.WriteLine("003 - Biguaçu");
+        Console.WriteLine("002 - Biguaçu");
+        Console.WriteLine("003 - São José");
         Console.WriteLine("4 - Listar Todas as Contas");
         Console.WriteLine("5 - Listar Contas Negativas");
         Console.WriteLine("6 - Total do Valor Investido");
@@ -35,6 +34,7 @@ void MenuPrincipal(DateTime dataAtual)
                 Console.WriteLine("1 - Criar Conta");
                 Console.WriteLine("2 - Acessar Conta");
                 Console.WriteLine("3 - Listar Todas as Contas");
+                Console.WriteLine("0 - Sair");
                 var opcao = Console.ReadLine();
                 if (opcao == "1")
                 {
@@ -54,13 +54,13 @@ void MenuPrincipal(DateTime dataAtual)
                     else
                     if (opcaoAgencia == "002")
                     {
-                        Conta contaAcessada = AcessarConta(saoJose);
+                        Conta contaAcessada = AcessarConta(biguacu);
                         MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
                     }
                     else
                     if (opcaoAgencia == "003")
                     {
-                        Conta contaAcessada = AcessarConta(biguacu);
+                        Conta contaAcessada = AcessarConta(saoJose);
                         MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
                     }
                     else
@@ -203,7 +203,7 @@ Conta CriarConta(string agencia)
             {
                 Console.WriteLine("Conta vinculada à agência Biguacu.");
             }
-            else if (agencia == "002")
+            else if (agencia == "003")
             {
                 Console.WriteLine("Conta vinculada à agência São José.");
             }
@@ -258,8 +258,16 @@ Conta AcessarConta (Agencia agencia)
 {
     try
     {
+
+        if (agencia.ListContas == null)
+            throw new Exception("Não há contas nesta agência!");
+
+
         Console.WriteLine("Digite o seu CPF para acessar a sua conta:");
         string cpf = Console.ReadLine();
+
+        
+
 
         Conta contaSelecionada = agencia.ListContas.FirstOrDefault(conta => conta.CPF == cpf);
         
@@ -296,6 +304,7 @@ void MenuConta(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia bigu
 
     } else if (conta is ContaInvestimento)
     {
+        MenuContaInvestimento(conta, florianopolis, saoJose, biguacu);
 
     }
 
@@ -424,6 +433,74 @@ void MenuContaPoupanca(Conta conta, Agencia florianopolis, Agencia saoJose, Agen
     } while (true);
 }
 
+void MenuContaInvestimento(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu)
+{
+    do
+    {
+        Console.Clear();
+        Console.WriteLine($"Titular: {conta.Nome}       Agência: {conta.Agencia}");
+        Console.WriteLine("1 - Saque");
+        Console.WriteLine("2 - Depósito");
+        Console.WriteLine("3 - Verificar Saldo");
+        Console.WriteLine("4 - Extrato");
+        Console.WriteLine("5 - Transferência");
+        Console.WriteLine("6 - Alterar Dados");
+        Console.WriteLine("7 - Investir/Aplicar");
+        Console.WriteLine("0 - Sair");
+        var opcao = Console.ReadLine();
+
+        if (opcao == "1")
+        {
+
+            Saque(conta);
+
+        }
+        else if (opcao == "2")
+        {
+
+            Deposito(conta);
+
+        }
+        else if (opcao == "3")
+        {
+
+            VerificarSaldo(conta);
+
+        }
+        else if (opcao == "4")
+        {
+
+            Extrato(conta);
+
+        }
+        else if (opcao == "5")
+        {
+
+            Transferencia(conta, florianopolis, saoJose, biguacu);
+
+        }
+
+        else if (opcao == "6")
+        {
+
+            AlterarDados(conta);
+
+        }
+        else if (opcao == "7")
+        {
+
+            SimularInvestimento(conta);
+
+        }
+        else if (opcao == "0")
+        {
+            break;
+        }
+
+
+    } while (true);
+}
+
 void Saque(Conta conta)
 {
     Console.WriteLine("Digite o valor a ser sacado:");
@@ -439,14 +516,14 @@ void Saque(Conta conta)
 
         var saque = conta.Saque(valorSaque, conta);
 
-        Continuar();
+        
 
         Console.WriteLine($"O valor: R${valorSaque:N2} foi sacado.");
         Console.WriteLine($"Saldo atual: R${conta.Saldo:N2}");
         Console.ReadLine();
 
         conta.AdicionarTransacao(saque);
-
+        Continuar();
     }
     catch (Exception ex)
     {
@@ -666,83 +743,115 @@ void SimularInvestimentoPoupanca(Conta conta){
     Continuar();
 }
 
-void Investir(Conta conta)
+void Investir(Conta conta, decimal valor,TipoInvestimentoEnum tipoInvestimento)
 {
+
+    Investimento investimento1 = new Investimento(conta, valor, tipoInvestimento);
+
+    conta.TransacaoList.Add(investimento1);
 
 }
 
-void SimularInvestimento()
+void SimularInvestimento(Conta conta)
 {
-    do {
-        Console.Clear();
-        Console.WriteLine("Tipo de Investimento:");
-
-        Console.WriteLine("1 - LCI: 8% ao ano.");
-        Console.WriteLine("Aplicação mínima: 6 meses");
-
-        Console.WriteLine("2 - LCA: 9% ao ano.");
-        Console.WriteLine("Aplicação mínima: 12 meses");
-
-        Console.WriteLine("3 - CDB: 10% ao ano.");
-        Console.WriteLine("Aplicação mínima: 36 meses");
-        
-        Console.WriteLine(" ");
-        Console.WriteLine("0 - Sair");
-
-        var opcao = Console.ReadLine();
-
-        decimal taxaAnual = 0;
-
-        if(opcao == "1")
-        {
-            taxaAnual = 8;
-
-        } else if (opcao == "2")
-        {
-            taxaAnual = 9;
-
-        }
-        else if(opcao == "3")
-        {
-            taxaAnual = 10;
-
-        } else if (opcao == "0")
-        {
-            break;
-        }
-
-    } while (true);
-
-
-    void CalcularInvestimento(decimal taxaAnual)
+    try
     {
-
-        var taxaDiaria = (taxaAnual / 365) / 100;
-
-        Console.WriteLine("Qual o valor que pretente aplicar?");
-        var valor = Convert.ToDecimal(Console.ReadLine());
-
-        Console.WriteLine("Por quantos meses deseja manter o valor aplicado?");
-        var meses = Convert.ToDecimal(Console.ReadLine());
-
-        var dias = meses * 30;
-
-        for (int i = 0; i < dias; i++)
+        do
         {
-            valor += (valor * taxaDiaria);
+            Console.Clear();
+            Console.WriteLine("Tipo de Investimento:");
+
+            Console.WriteLine("1 - LCI: 8% ao ano.");
+            Console.WriteLine("Aplicação mínima: 6 meses");
+
+            Console.WriteLine("2 - LCA: 9% ao ano.");
+            Console.WriteLine("Aplicação mínima: 12 meses");
+
+            Console.WriteLine("3 - CDB: 10% ao ano.");
+            Console.WriteLine("Aplicação mínima: 36 meses");
+
+            Console.WriteLine(" ");
+            Console.WriteLine("0 - Sair");
+
+            var opcao = Console.ReadLine();
+
+            decimal taxaAnual = 0;
+
+            if (opcao == "1")
+            {
+                taxaAnual = 8;
+                CalcularInvestimento(taxaAnual, TipoInvestimentoEnum.LCI);
+
+            }
+            else if (opcao == "2")
+            {
+                taxaAnual = 9;
+                CalcularInvestimento(taxaAnual, TipoInvestimentoEnum.LCA);
+
+            }
+            else if (opcao == "3")
+            {
+                taxaAnual = 10;
+                CalcularInvestimento(taxaAnual, TipoInvestimentoEnum.CDB);
+
+            }
+            else if (opcao == "0")
+            {
+                break;
+            }
+
+        } while (true);
+
+
+        void CalcularInvestimento(decimal taxaAnual, TipoInvestimentoEnum tipoInvestimento)
+        {
+
+            var taxaDiaria = (taxaAnual / 365) / 100;
+
+            Console.WriteLine("Qual o valor que pretente aplicar?");
+            var valorSimulado = Convert.ToDecimal(Console.ReadLine());
+
+            Console.WriteLine("Por quantos meses deseja manter o valor aplicado?");
+            var meses = Convert.ToDecimal(Console.ReadLine());
+
+            var dias = meses * 30;
+
+            decimal resultado = 0;
+            for (int i = 0; i < dias; i++)
+            {
+                resultado = valorSimulado *  (valorSimulado * taxaDiaria);
+            }
+
+            Console.WriteLine($"O valor ao final do período será de R${resultado:N2}");
+
+
+            Console.WriteLine("Deseja aplicar esse valor no investimento selecionado?");
+            Console.WriteLine("1 - Sim");
+            Console.WriteLine("2 - Não");
+            var selecao = Console.ReadLine();
+
+            if (selecao == "1")
+            {
+                if (conta.Saldo < valorSimulado || valorSimulado == 0)
+                    throw new Exception("Saldo incompatível para investir!");
+
+                Investir(conta, valorSimulado, tipoInvestimento);
+            }
+
+            else
+            {
+
+            }
+
+
+
         }
 
-        Console.WriteLine($"O valor ao final do período será de R${valor:N2}");
-
-
-        Console.WriteLine("Deseja aplicar esse valor no investimento selecionado?");
-        Console.WriteLine("1 - Sim");
-        Console.WriteLine("2 - Não")
-        var selecao = Console.ReadLine();
-
-        
+    } catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        Continuar();
     }
-
 }
 
 string ValidarCPF(string cpf)

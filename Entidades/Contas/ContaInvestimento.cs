@@ -1,11 +1,12 @@
-﻿using FintechDevInHouse.Entidades.Transacoes;
+﻿using FintechDevInHouse.Entidades;
+using FintechDevInHouse.Transacoes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FintechDevInHouse.Entidades
+namespace FintechDevInHouse.Transacoes
 {
     
     public class ContaInvestimento : Conta
