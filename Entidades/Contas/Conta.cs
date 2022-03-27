@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 namespace FintechDevInHouse.Entidades
 {
    
-    public  class Conta
+    public abstract class Conta
     {
         public string Nome { get; set; }
         public string CPF { get; set; } //Falta Validar
         public string Endereco { get; set; }
         public decimal RendaMensal { get; set; }
+        public int Numero { get; set; }
         public string Agencia { get; set; }
         public decimal Saldo { get; set; } = 100;
         public List<Transacao>? TransacaoList { get; set; }
+       
 
         public void AdicionarTransacao(Transacao transacao)
         {
@@ -63,17 +65,6 @@ namespace FintechDevInHouse.Entidades
         public void RetornarSaldo()
         {
             Console.WriteLine($"Seu saldo atual é: R${Saldo:N2}");
-        }
-
-        public void Extrato()
-        {
-            TransacaoList.ForEach(transacao => {
-            
-                if(transacao is Transferencias)
-                {
-                    InformacoesConta();
-                }
-            });
         }
 
         public void InformacoesConta()

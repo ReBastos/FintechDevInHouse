@@ -21,6 +21,7 @@ void MenuPrincipal(DateTime dataAtual)
         Console.WriteLine("4 - Listar Todas as Contas");
         Console.WriteLine("5 - Listar Contas Negativas");
         Console.WriteLine("6 - Total do Valor Investido");
+        Console.WriteLine("0 - Sair");
 
         string opcaoAgencia = Console.ReadLine();
 
@@ -49,19 +50,19 @@ void MenuPrincipal(DateTime dataAtual)
                     if (opcaoAgencia == "001")
                     {
                         Conta contaAcessada = AcessarConta(florianopolis);
-                        MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
+                        MenuConta(contaAcessada, florianopolis, saoJose, biguacu, dataAtual);
                     }
                     else
                     if (opcaoAgencia == "002")
                     {
                         Conta contaAcessada = AcessarConta(biguacu);
-                        MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
+                        MenuConta(contaAcessada, florianopolis, saoJose, biguacu, dataAtual);
                     }
                     else
                     if (opcaoAgencia == "003")
                     {
                         Conta contaAcessada = AcessarConta(saoJose);
-                        MenuConta(contaAcessada, florianopolis, saoJose, biguacu);
+                        MenuConta(contaAcessada, florianopolis, saoJose, biguacu, dataAtual);
                     }
                     else
                     {
@@ -291,26 +292,26 @@ Conta AcessarConta (Agencia agencia)
     
 }
 
-void MenuConta(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu)
+void MenuConta(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu, DateTime data)
 {
     if(conta is ContaCorrente)
     {
-        MenuContaCorrente(conta, florianopolis, saoJose, biguacu);
+        MenuContaCorrente(conta, florianopolis, saoJose, biguacu, data);
 
     } else if (conta is ContaPoupanca)
     {
 
-        MenuContaPoupanca(conta, florianopolis, saoJose, biguacu);
+        MenuContaPoupanca(conta, florianopolis, saoJose, biguacu, data);
 
     } else if (conta is ContaInvestimento)
     {
-        MenuContaInvestimento(conta, florianopolis, saoJose, biguacu);
+        MenuContaInvestimento(conta, florianopolis, saoJose, biguacu, data);
 
     }
 
 }
 
-void MenuContaCorrente(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu)
+void MenuContaCorrente(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu, DateTime data)
 {
     do
     {
@@ -352,7 +353,7 @@ void MenuContaCorrente(Conta conta, Agencia florianopolis, Agencia saoJose, Agen
         else if (opcao == "5")
         {
 
-            Transferencia(conta, florianopolis, saoJose, biguacu);
+            Transferencia(conta, florianopolis, saoJose, biguacu, data);
 
         }
         else if (opcao == "6")
@@ -368,7 +369,8 @@ void MenuContaCorrente(Conta conta, Agencia florianopolis, Agencia saoJose, Agen
     } while (true);
 }
 
-void MenuContaPoupanca(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu){
+void MenuContaPoupanca(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu, DateTime data)
+{
     do
     {
         Console.Clear();
@@ -410,7 +412,7 @@ void MenuContaPoupanca(Conta conta, Agencia florianopolis, Agencia saoJose, Agen
         else if (opcao == "5")
         {
 
-            Transferencia(conta, florianopolis, saoJose, biguacu);
+            Transferencia(conta, florianopolis, saoJose, biguacu, data);
 
         }
 
@@ -433,7 +435,7 @@ void MenuContaPoupanca(Conta conta, Agencia florianopolis, Agencia saoJose, Agen
     } while (true);
 }
 
-void MenuContaInvestimento(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu)
+void MenuContaInvestimento(Conta conta, Agencia florianopolis, Agencia saoJose, Agencia biguacu, DateTime data)
 {
     do
     {
@@ -476,7 +478,7 @@ void MenuContaInvestimento(Conta conta, Agencia florianopolis, Agencia saoJose, 
         else if (opcao == "5")
         {
 
-            Transferencia(conta, florianopolis, saoJose, biguacu);
+            Transferencia(conta, florianopolis, saoJose, biguacu, data);
 
         }
 
@@ -506,10 +508,22 @@ void Saque(Conta conta)
     Console.WriteLine("Digite o valor a ser sacado:");
     decimal valorSaque = Convert.ToDecimal(Console.ReadLine());
 
+
     try
     {
-        if (conta.Saldo < valorSaque)
-            throw new Exception("Você não possúi saldo suficiente na conta!");
+
+        if (conta is ContaCorrente)
+        {
+            if (valorSaque > conta.Saldo + (conta.RendaMensal * 0.1M))
+            {
+                throw new Exception("Valor excede Cheque Especial!");
+            }
+        }
+        else
+        {
+            if (conta.Saldo < valorSaque)
+                throw new Exception("Você não possúi saldo suficiente!");
+        }
 
         if (valorSaque <= 0)
             throw new Exception("Valor de saque não pode ser negativo!");
@@ -568,6 +582,52 @@ void VerificarSaldo(Conta conta)
 
 void Extrato(Conta conta)
 {
+
+    void ListarSaque(Saque transacao)
+    {
+
+        Console.WriteLine("-------------------------------");
+        Console.WriteLine("Tipo de Transacao: Saque");
+        Console.WriteLine($"Horário: {transacao.Data}");
+        Console.WriteLine($"Origem: Titular-> {transacao.Origem.Nome} CPF->{transacao.Origem.CPF} ");
+        Console.WriteLine($"Valor: R${transacao.Valor:N2}");
+        Console.WriteLine("-------------------------------");
+
+    }
+
+    void ListarDeposito(Deposito transacao) { 
+
+        Console.WriteLine("-------------------------------");
+        Console.WriteLine("Tipo de Transacao: Depósito");
+        Console.WriteLine($"Horário: {transacao.Data}");
+        Console.WriteLine($"Origem: Titular-> {transacao.Origem.Nome} CPF->{transacao.Origem.CPF} ");
+        Console.WriteLine($"Valor: R${transacao.Valor:N2}");
+        Console.WriteLine("-------------------------------");
+
+    }
+
+    void ListarTransferencia(Transferencias transacao)
+    {
+        Console.WriteLine("-------------------------------");
+        Console.WriteLine("Tipo de Transacao: Transferência");
+        Console.WriteLine($"Horário: {transacao.Data}");
+        Console.WriteLine($"Origem: {transacao.Origem}");
+        Console.WriteLine($"Destino: {transacao.Destino.Nome}");
+        Console.WriteLine($"Valor: {transacao.Valor}");
+
+
+    }
+
+    void ListarInvestimento(Investimento transacao)
+    {
+        Console.WriteLine("-------------------------------");
+        Console.WriteLine("Tipo de Transacao: Investimento");
+        Console.WriteLine($"Horário: {transacao.Data}");
+        Console.WriteLine($"Origem: {transacao.Origem}");
+        Console.WriteLine($"Tipo de Investimento: {transacao.TipoInvestimento}");
+        Console.WriteLine($"Valor: {transacao.Valor}");
+    }
+
     try
     {
 
@@ -578,30 +638,26 @@ void Extrato(Conta conta)
         {
             if(transacao is Deposito)
             {
-                Console.WriteLine("-------------------------------");
-                Console.WriteLine("Tipo de Transacao: Depósito");
-                Console.WriteLine($"Origem: Titular-> {transacao.Origem.Nome} CPF->{transacao.Origem.CPF} ");
-                Console.WriteLine($"Valor: R${transacao.Valor:N2}");
-                Console.WriteLine("-------------------------------");
+                ListarDeposito((Deposito)transacao);
 
             } else if (transacao is Saque)
             {
-                Console.WriteLine("-------------------------------");
-                Console.WriteLine("Tipo de Transacao: Saque");
-                Console.WriteLine($"Origem: Titular-> {transacao.Origem.Nome} CPF->{transacao.Origem.CPF} ");
-                Console.WriteLine($"Valor: R${transacao.Valor:N2}");
-                Console.WriteLine("-------------------------------");
+                ListarSaque((Saque)transacao);
             
             } else if (transacao is Transferencias)
             {
-                Console.WriteLine("-------------------------------");
-                Console.WriteLine("Tipo de Transacao: Transferência");
-                Console.WriteLine($"Origem: {transacao.Origem}");
-                Console.WriteLine($"Destino: {transacao}");
+                
+                ListarTransferencia((Transferencias)transacao);
+
+            } else if (transacao is Investimento)
+            {
+
+                ListarInvestimento((Investimento)transacao);
 
             }
-            
-            
+
+
+
         });
             Continuar();
 
@@ -613,10 +669,14 @@ void Extrato(Conta conta)
 
 }
 
-void Transferencia(Conta conta, Agencia florianopolis, Agencia SaoJose, Agencia Biguacu)
+void Transferencia(Conta conta, Agencia florianopolis, Agencia SaoJose, Agencia Biguacu, DateTime data)
 {
     try
     {
+        if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+            throw new Exception("Transferência não pode ser realizada fora de um dia útil!");
+
+
         Console.WriteLine("Digite o valor a ser transferido:");
         var valor = Convert.ToDecimal(Console.ReadLine());
 
@@ -644,7 +704,8 @@ void Transferencia(Conta conta, Agencia florianopolis, Agencia SaoJose, Agencia 
         Console.WriteLine("Digite o CPF da conta Destino");
         var cpf = Console.ReadLine();
 
-
+        if(cpf == conta.CPF)
+            throw new Exception("Não é possível realizar uma transferência para esta conta.");
 
 
         if (opcaoAgencia == "001")
@@ -747,9 +808,15 @@ void Investir(Conta conta, decimal valor,TipoInvestimentoEnum tipoInvestimento)
 {
 
     Investimento investimento1 = new Investimento(conta, valor, tipoInvestimento);
+    Investimento investimento2 = new Investimento(conta, valor, tipoInvestimento);
+
 
     conta.TransacaoList.Add(investimento1);
 
+    if (conta is ContaInvestimento)
+    {
+        
+    }
 }
 
 void SimularInvestimento(Conta conta)
@@ -999,6 +1066,7 @@ void TempodoSistema()
 {
     do
     {
+        Console.Clear();
         Console.WriteLine("Defina uma data para iniciar o sistema!");
         Console.WriteLine("1 - Hoje");
         Console.WriteLine("2 - Data Simulada");
