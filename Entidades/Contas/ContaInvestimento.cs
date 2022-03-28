@@ -12,7 +12,7 @@ namespace FintechDevInHouse.Transacoes
     public class ContaInvestimento : Conta
     {
  
-        public Investimento Investido { get; set; }
+        public Investimento? Investido { get; set; }
         
 
         public ContaInvestimento(string nome, string cPF, string endereco, decimal rendaMensal, string agencia) 

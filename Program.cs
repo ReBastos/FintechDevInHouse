@@ -813,10 +813,23 @@ void Investir(Conta conta, decimal valor,TipoInvestimentoEnum tipoInvestimento)
 
     conta.TransacaoList.Add(investimento1);
 
-    if (conta is ContaInvestimento)
+    void AdicionarInvestimento(ContaInvestimento conta, Investimento investimento)
     {
+        try
+        {
+            if (conta.Investido != null)
+                throw new Exception("Você já possúi um investimento em curso");
+
+            conta.Investido = investimento;
+
+        } catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
         
     }
+
+    AdicionarInvestimento((ContaInvestimento)conta, investimento2);
 }
 
 void SimularInvestimento(Conta conta)
@@ -1107,4 +1120,77 @@ void TempodoSistema()
         }
 
     } while (true);
+}
+
+void MenuInvestimento (Conta conta, DateTime data)
+{
+    do
+    {
+
+        Console.WriteLine("1 - Simular Investimento / Investir");
+        Console.WriteLine("2 - Extrato Investimento");
+        Console.WriteLine("3 - Sacar Investimento");
+        Console.WriteLine("0 - Sair");
+        var opcao = Console.ReadLine();
+
+        if (opcao == "1")
+        {
+
+            SimularInvestimento(conta);
+
+
+        }
+        else if (opcao == "2")
+        {
+
+
+
+        }
+        else if (opcao == "3")
+        {
+
+        }
+        else if (opcao == "0")
+        {
+            break;
+        }
+
+
+
+    } while (true);
+}
+
+void ExtratoInvestimento(ContaInvestimento conta, DateTime data)
+{
+    if(conta.Investido.TipoInvestimento == TipoInvestimentoEnum.LCI)
+    {
+
+    } 
+    
+    else if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.LCA)
+    {
+
+    }
+
+    else if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.CDB)
+    {
+
+    }
+
+    void ExibirInvestimento(ContaInvestimento conta, decimal taxaAnual, TipoInvestimentoEnum tipoInvestimento, DateTime data)
+    {
+        var taxaDiaria = (taxaAnual / 365) / 100;
+
+
+
+        var dias = (int)data.Subtract(conta.Investido.Data).TotalDays;
+
+        decimal resultado = 0;
+        for (int i = 0; i < dias; i++)
+        {
+            resultado = conta.Investido.Valor * (conta.Investido.Valor * taxaDiaria);
+        }
+
+        Console.WriteLine($"O valor ao final do período será de R${resultado:N2}");
+    }
 }
