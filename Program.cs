@@ -811,7 +811,7 @@ void Investir(Conta conta, decimal valor,TipoInvestimentoEnum tipoInvestimento)
     Investimento investimento2 = new Investimento(conta, valor, tipoInvestimento);
 
 
-    conta.TransacaoList.Add(investimento1);
+    conta.AdicionarTransacao(investimento1);
 
     void AdicionarInvestimento(ContaInvestimento conta, Investimento investimento)
     {
@@ -861,18 +861,21 @@ void SimularInvestimento(Conta conta)
             {
                 taxaAnual = 8;
                 CalcularInvestimento(taxaAnual, TipoInvestimentoEnum.LCI);
+                break;
 
             }
             else if (opcao == "2")
             {
                 taxaAnual = 9;
                 CalcularInvestimento(taxaAnual, TipoInvestimentoEnum.LCA);
+                break;
 
             }
             else if (opcao == "3")
             {
                 taxaAnual = 10;
                 CalcularInvestimento(taxaAnual, TipoInvestimentoEnum.CDB);
+                break;
 
             }
             else if (opcao == "0")
@@ -899,9 +902,10 @@ void SimularInvestimento(Conta conta)
             decimal resultado = 0;
             for (int i = 0; i < dias; i++)
             {
-                resultado = valorSimulado *  (valorSimulado * taxaDiaria);
+                resultado += (valorSimulado *  taxaDiaria);
             }
 
+            resultado = valorSimulado + resultado;
             Console.WriteLine($"O valor ao final do período será de R${resultado:N2}");
 
 
@@ -1198,8 +1202,10 @@ void ExtratoInvestimento(ContaInvestimento conta, DateTime data)
             decimal resultado = 0;
             for (int i = 0; i < dias; i++)
             {
-                resultado = conta.Investido.Valor * (conta.Investido.Valor * taxaDiaria);
+                resultado += conta.Investido.Valor * taxaDiaria;
             }
+
+            resultado += conta.Investido.Valor;
 
             Console.WriteLine($"Investimento do tipo {tipoInvestimento}");
             Console.WriteLine($"Taxa de rendimento anual {taxaAnual}%");

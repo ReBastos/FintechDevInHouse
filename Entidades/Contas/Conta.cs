@@ -28,7 +28,6 @@ namespace FintechDevInHouse.Entidades
             }
             TransacaoList.Add(transacao);
         }
-
         
         public Conta(string nome, string cPF, string endereco, decimal rendaMensal, string agencia)
         {
@@ -89,8 +88,6 @@ namespace FintechDevInHouse.Entidades
 
            
         }
-
-        //Falta Alterar Dados
     
     
     
