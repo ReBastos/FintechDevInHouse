@@ -491,7 +491,7 @@ void MenuContaInvestimento(Conta conta, Agencia florianopolis, Agencia saoJose, 
         else if (opcao == "7")
         {
 
-            SimularInvestimento(conta);
+            MenuInvestimento(conta, data);
 
         }
         else if (opcao == "0")
@@ -1143,11 +1143,15 @@ void MenuInvestimento (Conta conta, DateTime data)
         else if (opcao == "2")
         {
 
+            ExtratoInvestimento((ContaInvestimento)conta, data);
 
 
         }
         else if (opcao == "3")
         {
+
+            SacarInvestimento((ContaInvestimento)conta, data);
+
 
         }
         else if (opcao == "0")
@@ -1162,35 +1166,106 @@ void MenuInvestimento (Conta conta, DateTime data)
 
 void ExtratoInvestimento(ContaInvestimento conta, DateTime data)
 {
-    if(conta.Investido.TipoInvestimento == TipoInvestimentoEnum.LCI)
+    try
     {
+        if (conta.Investido == null)
+            throw new Exception("Não há investimento a ser exibido!");
 
-    } 
-    
-    else if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.LCA)
-    {
-
-    }
-
-    else if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.CDB)
-    {
-
-    }
-
-    void ExibirInvestimento(ContaInvestimento conta, decimal taxaAnual, TipoInvestimentoEnum tipoInvestimento, DateTime data)
-    {
-        var taxaDiaria = (taxaAnual / 365) / 100;
-
-
-
-        var dias = (int)data.Subtract(conta.Investido.Data).TotalDays;
-
-        decimal resultado = 0;
-        for (int i = 0; i < dias; i++)
+        if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.LCI)
         {
-            resultado = conta.Investido.Valor * (conta.Investido.Valor * taxaDiaria);
+            ExibirInvestimento(conta, 8, TipoInvestimentoEnum.LCI, data);
+
         }
 
-        Console.WriteLine($"O valor ao final do período será de R${resultado:N2}");
+        else if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.LCA)
+        {
+            ExibirInvestimento(conta, 9, TipoInvestimentoEnum.LCA, data);
+
+        }
+
+        else if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.CDB)
+        {
+            ExibirInvestimento(conta, 10, TipoInvestimentoEnum.CDB, data);
+
+        }
+
+        void ExibirInvestimento(ContaInvestimento conta, decimal taxaAnual, TipoInvestimentoEnum tipoInvestimento, DateTime data)
+        {
+            var taxaDiaria = (taxaAnual / 365) / 100;
+
+            var dias = (int)data.Subtract(conta.Investido.Data).TotalDays;
+
+            decimal resultado = 0;
+            for (int i = 0; i < dias; i++)
+            {
+                resultado = conta.Investido.Valor * (conta.Investido.Valor * taxaDiaria);
+            }
+
+            Console.WriteLine($"Investimento do tipo {tipoInvestimento}");
+            Console.WriteLine($"Taxa de rendimento anual {taxaAnual}%");
+            Console.WriteLine($"Saldo atual do investimento:{resultado:N2}");
+        }
+    } catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        Continuar();
     }
+}
+
+void SacarInvestimento(ContaInvestimento conta, DateTime data)
+{
+    try
+    {
+
+        if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.LCI)
+        {
+
+            if (conta.Investido.Data.Subtract(data).TotalDays < 180)
+                throw new Exception("Tempo mínimo de investimento: 6 meses");
+
+
+        } else if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.LCA)
+        {
+
+            if (conta.Investido.Data.Subtract(data).TotalDays < 360)
+                throw new Exception("Tempo mínimo de investimento: 12 meses");
+
+
+        }
+        else if (conta.Investido.TipoInvestimento == TipoInvestimentoEnum.CDB)
+        {
+
+            if (conta.Investido.Data.Subtract(data).TotalDays < 1080)
+                throw new Exception("Tempo mínimo de investimento: 36 meses");
+
+        }        
+
+            Console.WriteLine("Deseja sacar o valor investido?");
+            Console.WriteLine("1 - Sim");
+            Console.WriteLine("2 - Não");
+            var opcao = Console.ReadLine();
+
+            if(opcao == "1")
+            {
+
+                conta.Saldo += conta.Investido.Valor;
+                conta.Investido = null;
+                Console.WriteLine("Valor sacado com sucesso!");
+            } 
+
+            else if (opcao == "2")
+            {
+
+                Continuar();
+            }
+
+
+
+    } catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        Continuar();
+    }
+    
+
 }
