@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FintechDevInHouse.Transacoes
 {
-    public class Transacao
+    public abstract class Transacao
     {
         public Conta Origem { get; set; }
 
