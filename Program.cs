@@ -111,6 +111,8 @@ void MenuPrincipal(DateTime dataAtual)
         else if (opcaoAgencia == "6")
         {
 
+            TotalValorInvestido(florianopolis, biguacu, saoJose);
+
         }
 
         else if(opcaoAgencia == "0")
@@ -1273,5 +1275,37 @@ void SacarInvestimento(ContaInvestimento conta, DateTime data)
         Continuar();
     }
     
+
+}
+
+void TotalValorInvestido(Agencia florianopolis, Agencia biguacu, Agencia saojose)
+{
+
+    decimal resultado = 0;
+
+    foreach (ContaInvestimento conta in florianopolis.ListContas)
+    {
+        resultado += conta.Investido.Valor;
+    }
+
+    foreach (ContaInvestimento conta in biguacu.ListContas)
+    {
+        resultado += conta.Investido.Valor;
+    }
+
+    foreach (ContaInvestimento conta in saojose.ListContas)
+    {
+        resultado += conta.Investido.Valor;
+    }
+
+    if( resultado == 0)
+    {
+        Console.WriteLine("Não há valores investidos");
+    } else
+    {
+        Console.WriteLine($"Total investido: R${resultado:N2}");
+        Continuar();
+    }
+
 
 }
